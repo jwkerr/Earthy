@@ -1,0 +1,6 @@
+name: Earthy
+version: "0.1.0"
+main: net.earthmc.earthy.paper.EarthyServer
+api-version: "1.21"
+authors: [Fruitloopins]
+website: https://earthmc.net

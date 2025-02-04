@@ -1,0 +1,26 @@
+plugins {
+    id "java"
+}
+
+static def gitVersion() {
+    "git rev-parse --short HEAD".execute().text.trim()
+}
+
+subprojects {
+    group = "net.earthmc"
+    version = gitVersion()
+
+    apply plugin: "java"
+
+    tasks.named("jar") {
+        archiveFileName = "earthy-${project.name}-${project.version}.jar"
+    }
+}
+
+jar {
+    enabled = false
+}
+
+test.reports {
+    html.required = false
+}

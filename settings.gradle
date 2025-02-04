@@ -1,0 +1,16 @@
+pluginManagement {
+    repositories {
+        maven {
+            name = "Fabric"
+            url = "https://maven.fabricmc.net/"
+        }
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = "Earthy"
+
+include("fabric")
+include("paper")
+include 'common'
+

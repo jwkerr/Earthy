@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "earthy",
+  "version": "${version}",
+  "name": "Earthy",
+  "description": "Client mod for the server EarthMC",
+  "authors": [
+    {
+      "name": "Fruitloopins",
+      "contact": {
+        "discord": "fruitloopins"
+      }
+    }
+  ],
+  "contact": {
+    "homepage": "https://earthmc.net",
+    "discord": "https://discord.gg/earthmcnet",
+    "issues": "https://github.com/jwkerr/Earthy/issues",
+    "sources": "https://github.com/jwkerr/Earthy"
+  },
+  "license": "MIT",
+  "icon": "assets/earthy/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.earthmc.earthy.fabric.EarthyClient"
+    ],
+    "modmenu": [
+      "net.earthmc.earthy.fabric.hook.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "earthy.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "fabric": "*",
+    "minecraft": ">=1.20.4"
+  },
+  "suggests": {
+    "modmenu": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/earthmcnet",
+        "modmenu.donate": "https://github.com/sponsors/jwkerr",
+        "modmenu.modrinth": "https://modrinth.com/mod/earthy"
+      }
+    }
+  }
+}
