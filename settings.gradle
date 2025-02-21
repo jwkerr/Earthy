@@ -10,7 +10,4 @@ pluginManagement {
 
 rootProject.name = "Earthy"
 
-include("fabric")
-include("paper")
-include 'common'
-
+include("auth", "common", "fabric")

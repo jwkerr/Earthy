@@ -1,11 +1,14 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.earthmc.earthy.fabric.mixin",
+  "package": "au.lupine.earthy.fabric.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "ClientPacketListenerMixin",
+    "PlayerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "au.lupine.earthy.fabric.object.ConditionalMixinPlugin"
 }

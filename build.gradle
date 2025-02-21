@@ -7,13 +7,17 @@ static def gitVersion() {
 }
 
 subprojects {
-    group = "net.earthmc"
+    group = "au.lupine"
     version = gitVersion()
 
     apply plugin: "java"
 
-    tasks.named("jar") {
+    jar {
         archiveFileName = "earthy-${project.name}-${project.version}.jar"
+
+        from("${rootDir}/LICENSE.txt") {
+            into("")
+        }
     }
 }
 

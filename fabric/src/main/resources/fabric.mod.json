@@ -13,20 +13,18 @@
     }
   ],
   "contact": {
-    "homepage": "https://earthmc.net",
-    "discord": "https://discord.gg/earthmcnet",
-    "issues": "https://github.com/jwkerr/Earthy/issues",
-    "sources": "https://github.com/jwkerr/Earthy"
+    "homepage": "https://lupine.au",
+    "discord": "https://discord.gg/ey6ZvnwAJp"
   },
-  "license": "MIT",
+  "license": "ARR",
   "icon": "assets/earthy/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
-      "net.earthmc.earthy.fabric.EarthyClient"
+      "au.lupine.earthy.fabric.EarthyFabric"
     ],
     "modmenu": [
-      "net.earthmc.earthy.fabric.hook.ModMenuIntegration"
+      "au.lupine.earthy.fabric.object.hook.ModMenuIntegration"
     ]
   },
   "mixins": [
@@ -35,7 +33,7 @@
   "depends": {
     "fabricloader": "*",
     "fabric": "*",
-    "minecraft": ">=1.20.4"
+    "minecraft": ">=1.21.4"
   },
   "suggests": {
     "modmenu": "*"
@@ -43,9 +41,8 @@
   "custom": {
     "modmenu": {
       "links": {
-        "modmenu.discord": "https://discord.gg/earthmcnet",
-        "modmenu.donate": "https://github.com/sponsors/jwkerr",
-        "modmenu.modrinth": "https://modrinth.com/mod/earthy"
+        "modmenu.discord": "https://discord.gg/ey6ZvnwAJp",
+        "modmenu.donate": "https://github.com/sponsors/jwkerr"
       }
     }
   }

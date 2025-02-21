@@ -1,16 +1,38 @@
 plugins {
     id "fabric-loom" version "1.9-SNAPSHOT"
-    id "maven-publish"
+}
+
+remapJar {
+    archiveFileName = "earthy-${project.name}-${project.version}.jar"
+}
+
+repositories {
+    maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
+    }
+
+    maven {
+        name "Xander Maven"
+        url "https://maven.isxander.dev/releases"
+    }
+
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
-    implementation(project(":common"))
+    include implementation(project(":common"))
+
+    include implementation("com.github.jwkerr:EMCAPIClient:master-SNAPSHOT")
 
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+    modImplementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
+    modImplementation "net.kyori:adventure-platform-mod-shared-fabric-repack:${project.adventure_version}"
 }
 
 processResources {
@@ -39,8 +61,4 @@ java {
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
-}
-
-remapJar {
-    archiveFileName = "earthy-${project.name}-${project.version}.jar"
 }
