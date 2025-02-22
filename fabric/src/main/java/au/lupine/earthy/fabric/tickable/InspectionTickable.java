@@ -1,4 +1,4 @@
-package au.lupine.earthy.fabric.object.tickable;
+package au.lupine.earthy.fabric.tickable;
 
 import au.lupine.earthy.fabric.manager.HeadDataManager;
 import au.lupine.earthy.fabric.manager.SessionManager;

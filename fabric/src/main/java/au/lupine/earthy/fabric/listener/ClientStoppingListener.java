@@ -1,4 +1,4 @@
-package au.lupine.earthy.fabric.object.listener;
+package au.lupine.earthy.fabric.listener;
 
 import au.lupine.earthy.fabric.EarthyFabric;
 import au.lupine.earthy.fabric.object.base.Listener;

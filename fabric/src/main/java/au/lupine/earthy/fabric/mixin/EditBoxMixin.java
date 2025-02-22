@@ -2,7 +2,7 @@ package au.lupine.earthy.fabric.mixin;
 
 import au.lupine.earthy.fabric.manager.SessionManager;
 import au.lupine.earthy.fabric.object.ChatChannel;
-import au.lupine.earthy.fabric.object.listener.CurrentChatChannelListener;
+import au.lupine.earthy.fabric.listener.CurrentChatChannelListener;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.kyori.adventure.text.format.TextColor;
 import net.minecraft.client.gui.Font;
@@ -32,7 +32,10 @@ public abstract class EditBoxMixin extends AbstractWidget {
 
     @Inject(
             method = "renderWidget",
-            at = @At("TAIL")
+            at = @At(
+                    value = "INVOKE",
+                    target = "Ljava/lang/String;isEmpty()Z"
+            )
     )
     public void inject(GuiGraphics guiGraphics, int i, int j, float f, CallbackInfo ci, @Local(ordinal = 5) int n, @Local(ordinal = 8) int q) {
         if (!SessionManager.getInstance().isPlayerOnEarthMC()) return;
