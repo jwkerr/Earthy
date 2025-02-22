@@ -1,7 +1,7 @@
 package au.lupine.earthy.fabric.mixin;
 
 import au.lupine.earthy.fabric.manager.SessionManager;
-import au.lupine.earthy.fabric.object.ChatChannel;
+import au.lupine.earthy.fabric.object.wrapper.ChatChannel;
 import au.lupine.earthy.fabric.listener.CurrentChatChannelListener;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.kyori.adventure.text.format.TextColor;
@@ -34,7 +34,8 @@ public abstract class EditBoxMixin extends AbstractWidget {
             method = "renderWidget",
             at = @At(
                     value = "INVOKE",
-                    target = "Ljava/lang/String;isEmpty()Z"
+                    target = "Ljava/lang/String;isEmpty()Z",
+                    ordinal = 0
             )
     )
     public void inject(GuiGraphics guiGraphics, int i, int j, float f, CallbackInfo ci, @Local(ordinal = 5) int n, @Local(ordinal = 8) int q) {

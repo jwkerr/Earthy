@@ -1,4 +1,4 @@
-package au.lupine.earthy.fabric.object;
+package au.lupine.earthy.fabric.object.wrapper;
 
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;

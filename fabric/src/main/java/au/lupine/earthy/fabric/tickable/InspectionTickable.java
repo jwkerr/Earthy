@@ -2,7 +2,7 @@ package au.lupine.earthy.fabric.tickable;
 
 import au.lupine.earthy.fabric.manager.HeadDataManager;
 import au.lupine.earthy.fabric.manager.SessionManager;
-import au.lupine.earthy.fabric.object.HeadData;
+import au.lupine.earthy.fabric.object.wrapper.HeadData;
 import au.lupine.earthy.fabric.object.NBTTraversal;
 import au.lupine.earthy.fabric.object.base.Tickable;
 import com.mojang.blaze3d.platform.InputConstants;

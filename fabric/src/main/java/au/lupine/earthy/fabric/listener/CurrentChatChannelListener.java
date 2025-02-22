@@ -1,7 +1,7 @@
 package au.lupine.earthy.fabric.listener;
 
 import au.lupine.earthy.fabric.EarthyFabric;
-import au.lupine.earthy.fabric.object.ChatChannel;
+import au.lupine.earthy.fabric.object.wrapper.ChatChannel;
 import au.lupine.earthy.fabric.object.base.Listener;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.kyori.adventure.platform.modcommon.MinecraftClientAudiences;

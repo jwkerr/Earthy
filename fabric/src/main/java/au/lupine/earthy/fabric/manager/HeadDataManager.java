@@ -1,6 +1,6 @@
 package au.lupine.earthy.fabric.manager;
 
-import au.lupine.earthy.fabric.object.HeadData;
+import au.lupine.earthy.fabric.object.wrapper.HeadData;
 import au.lupine.earthy.fabric.object.base.Manager;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
