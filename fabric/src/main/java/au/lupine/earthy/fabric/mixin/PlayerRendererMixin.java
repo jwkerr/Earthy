@@ -1,6 +1,5 @@
 package au.lupine.earthy.fabric.mixin;
 
-import au.lupine.earthy.fabric.EarthyFabric;
 import au.lupine.earthy.fabric.manager.SessionManager;
 import au.lupine.emcapiclient.object.apiobject.Player;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -39,6 +38,8 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
             )
     )
     private void inject(PlayerRenderState playerRenderState, Component component, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, CallbackInfo ci) {
+        if (!SessionManager.getInstance().isPlayerOnEarthMC()) return;
+
         Player player;
         try {
             player = SessionManager.getPlayerInfo().stream().filter(current -> {
@@ -52,7 +53,6 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
         }
 
         if (player == null) return;
-        if (!player.hasTown()) return;
 
         Component townyText = MinecraftClientAudiences.of().asNative(createTownyComponent(player));
 
@@ -67,7 +67,21 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
 
     @Unique
     private net.kyori.adventure.text.Component createTownyComponent(Player player) {
+        if (!player.hasTown()) return net.kyori.adventure.text.Component.translatable("msg.earthy.nomad", NamedTextColor.DARK_AQUA);
+
         TextComponent.Builder builder = net.kyori.adventure.text.Component.text();
+
+        if (player.isMayor()) {
+            NamedTextColor colour;
+            if (player.isKing()) {
+                colour = NamedTextColor.GOLD;
+            } else {
+                colour = NamedTextColor.DARK_AQUA;
+            }
+
+            builder.append(net.kyori.adventure.text.Component.text("\uD83D\uDC51", colour));
+            builder.appendSpace();
+        }
 
         builder.append(net.kyori.adventure.text.Component.text("[", NamedTextColor.GRAY));
 

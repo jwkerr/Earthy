@@ -1,5 +1,14 @@
 {
+  "yacl3.config.earthy:config.category.settings": "Settings",
+  "yacl3.config.earthy:config.autoHUD": "AutoHUD",
+  "yacl3.config.earthy:config.autoHUD.desc": "Automatically enable a Towny HUD type on connection to EarthMC",
+  "yacl3.config.enum.HUDType.none": "None",
+  "yacl3.config.enum.HUDType.perm": "Perm",
+  "yacl3.config.enum.HUDType.map": "Map",
+  "yacl3.config.earthy:config.server": "Server",
+  "yacl3.config.earthy:config.server.desc": "The name of the server to be used in API requests, do not change this unless there is a server reset or you will probably break things",
   "key.earthy.inspect": "Inspect",
   "category.earthy": "Earthy",
-  "msg.earthy.head_not_available": "Head not in internal database"
+  "msg.earthy.head_not_available": "Head not in internal database",
+  "msg.earthy.nomad": "Nomad"
 }

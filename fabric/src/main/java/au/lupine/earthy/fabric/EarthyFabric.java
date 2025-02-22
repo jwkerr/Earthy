@@ -1,15 +1,18 @@
 package au.lupine.earthy.fabric;
 
-import au.lupine.earthy.common.Earthy;
 import au.lupine.earthy.fabric.manager.HeadDataManager;
 import au.lupine.earthy.fabric.manager.SessionManager;
+import au.lupine.earthy.fabric.object.base.Listener;
 import au.lupine.earthy.fabric.object.base.Manager;
+import au.lupine.earthy.fabric.object.base.Tickable;
+import au.lupine.earthy.fabric.object.config.Config;
+import au.lupine.earthy.fabric.object.listener.AutoHUDListener;
 import au.lupine.earthy.fabric.object.listener.ClientStoppingListener;
-import au.lupine.earthy.fabric.object.tickable.InspectionTickable;
+import au.lupine.earthy.fabric.object.listener.CurrentChatChannelListener;
 import au.lupine.earthy.fabric.object.listener.TickableListener;
-import au.lupine.earthy.fabric.manager.ConfigManager;
-import au.lupine.earthy.common.object.Listener;
-import au.lupine.earthy.common.object.Tickable;
+import au.lupine.earthy.fabric.object.tickable.InspectionTickable;
+import au.lupine.emcapiclient.EMCAPIClient;
+import au.lupine.emcapiclient.object.wrapper.Server;
 import net.fabricmc.api.ClientModInitializer;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -20,17 +23,22 @@ import java.util.List;
 
 public class EarthyFabric implements ClientModInitializer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Earthy.ID);
+    public static final String ID = "earthy";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ID);
     private static final String LOG_PREFIX = "[Earthy] ";
 
     public static final List<Manager> MANAGERS = new ArrayList<>();
 
+    private static EMCAPIClient api;
+
     @Override
     public void onInitializeClient() {
-        ConfigManager.HANDLER.load();
+        Config.HANDLER.load();
+
+        api = new EMCAPIClient(new Server(Config.server.toLowerCase()));
 
         registerManagers(
-                ConfigManager.getInstance(),
                 HeadDataManager.getInstance(),
                 SessionManager.getInstance()
         );
@@ -40,7 +48,9 @@ public class EarthyFabric implements ClientModInitializer {
         }
 
         registerListeners(
+                new AutoHUDListener(),
                 new ClientStoppingListener(),
+                new CurrentChatChannelListener(),
                 new TickableListener(),
                 SessionManager.getInstance()
         );
@@ -68,6 +78,10 @@ public class EarthyFabric implements ClientModInitializer {
             tickable.register();
             logInfo("Tickable " + tickable.getClass().getSimpleName() + " registered");
         }
+    }
+
+    public static EMCAPIClient getAPI() {
+        return api;
     }
 
     public static void logInfo(String msg) {

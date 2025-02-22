@@ -1,10 +1,10 @@
 package au.lupine.earthy.fabric.object.tickable;
 
-import au.lupine.earthy.common.object.Tickable;
 import au.lupine.earthy.fabric.manager.HeadDataManager;
 import au.lupine.earthy.fabric.manager.SessionManager;
 import au.lupine.earthy.fabric.object.HeadData;
 import au.lupine.earthy.fabric.object.NBTTraversal;
+import au.lupine.earthy.fabric.object.base.Tickable;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;

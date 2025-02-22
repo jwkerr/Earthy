@@ -1,10 +1,9 @@
 package au.lupine.earthy.fabric.manager;
 
-import au.lupine.earthy.common.Earthy;
-import au.lupine.earthy.common.object.Listener;
-import au.lupine.earthy.common.object.Tickable;
 import au.lupine.earthy.fabric.EarthyFabric;
+import au.lupine.earthy.fabric.object.base.Listener;
 import au.lupine.earthy.fabric.object.base.Manager;
+import au.lupine.earthy.fabric.object.base.Tickable;
 import au.lupine.emcapiclient.object.apiobject.Player;
 import au.lupine.emcapiclient.object.exception.FailedRequestException;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -13,10 +12,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.ServerData;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.*;
 
 public class SessionManager extends Manager implements Listener, Tickable {
 
@@ -38,11 +35,13 @@ public class SessionManager extends Manager implements Listener, Tickable {
     @Override
     public void register() {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-            if (!isPlayerOnEarthMC()) return;
+            ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
-            List<Player> online = getOnlinePlayers();
-            PLAYER_INFO.clear();
-            PLAYER_INFO.addAll(online);
+            scheduler.schedule(() -> {
+                if (!isPlayerOnEarthMC()) return;
+
+                updateOnlinePlayers();
+            }, 6L, TimeUnit.SECONDS);
         });
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> PLAYER_INFO.clear());
@@ -57,34 +56,35 @@ public class SessionManager extends Manager implements Listener, Tickable {
     public void onTick() {
         if (!isPlayerOnEarthMC()) return;
 
-        List<Player> online = getOnlinePlayers();
-        PLAYER_INFO.clear();
-        PLAYER_INFO.addAll(online);
+        updateOnlinePlayers();
     }
 
-    private List<Player> getOnlinePlayers() {
-        List<Player> online = new ArrayList<>();
-
+    private void updateOnlinePlayers() {
         ClientPacketListener cpl = Minecraft.getInstance().getConnection();
-        if (cpl == null) return online;
+        if (cpl == null) return;
 
         CompletableFuture.runAsync(() -> {
             try {
-                List<Player> all = Earthy.getAPI().getPlayersByUUIDs(cpl.getOnlinePlayers()
+                List<Player> online = EarthyFabric.getAPI().getPlayersByUUIDs(cpl.getOnlinePlayers()
                         .stream()
                         .map(player -> player.getProfile().getId())
                         .toList()
                 );
 
-                online.addAll(all);
+                PLAYER_INFO.clear();
+                PLAYER_INFO.addAll(online);
             } catch (FailedRequestException ignored) {}
         });
-
-        return online;
     }
 
     public boolean isPlayerOnEarthMC() {
-        ServerData server = Minecraft.getInstance().getCurrentServer();
+        ClientPacketListener cpl = Minecraft.getInstance().getConnection();
+        if (cpl == null) return false;
+
+        String brand = cpl.serverBrand();
+        if (brand == null) return false;
+
+        ServerData server = cpl.getServerData();
         if (server == null) return false;
 
         String ip = server.ip;
@@ -93,7 +93,12 @@ public class SessionManager extends Manager implements Listener, Tickable {
         if (split.length <= 1) return false;
 
         int finalIndex = split.length - 1;
-        return split[finalIndex - 1].equalsIgnoreCase("earthmc") && split[finalIndex].equalsIgnoreCase("net");
+        return split[finalIndex - 1].equalsIgnoreCase("earthmc") &&
+                split[finalIndex].equalsIgnoreCase("net") &&
+                (
+                        brand.equals("§aPremium activated! Thank you for the support!§r (Velocity)") ||
+                        brand.equals("§cPremium not activated, /Premium§r (Velocity)")
+                );
     }
 
     public boolean isPlayerInOverworld() {

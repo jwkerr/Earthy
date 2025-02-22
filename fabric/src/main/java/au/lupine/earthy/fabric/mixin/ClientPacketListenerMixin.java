@@ -1,6 +1,6 @@
 package au.lupine.earthy.fabric.mixin;
 
-import au.lupine.earthy.common.Earthy;
+import au.lupine.earthy.fabric.EarthyFabric;
 import au.lupine.earthy.fabric.manager.SessionManager;
 import au.lupine.emcapiclient.object.apiobject.Player;
 import au.lupine.emcapiclient.object.exception.FailedRequestException;
@@ -24,6 +24,8 @@ public abstract class ClientPacketListenerMixin {
             at = @At("HEAD")
     )
     public void inject(ClientboundPlayerInfoUpdatePacket.Action action, ClientboundPlayerInfoUpdatePacket.Entry entry, PlayerInfo playerInfo, CallbackInfo ci) {
+        if (!SessionManager.getInstance().isPlayerOnEarthMC()) return;
+
         if (action != ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER) return;
 
         UUID uuid = playerInfo.getProfile().getId();
@@ -33,7 +35,7 @@ public abstract class ClientPacketListenerMixin {
 
         CompletableFuture.runAsync(() -> {
             try {
-                Player player = Earthy.getAPI().getPlayerByUUID(uuid);
+                Player player = EarthyFabric.getAPI().getPlayerByUUID(uuid);
                 players.add(player);
             } catch (FailedRequestException ignored) {}
         });

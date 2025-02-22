@@ -23,7 +23,7 @@ repositories {
 dependencies {
     include implementation(project(":common"))
 
-    include implementation("com.github.jwkerr:EMCAPIClient:master-SNAPSHOT")
+    include implementation("com.github.jwkerr:EMCAPIClient:e36d646791")
 
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.officialMojangMappings()

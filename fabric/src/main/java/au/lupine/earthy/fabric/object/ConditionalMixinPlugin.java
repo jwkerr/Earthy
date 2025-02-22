@@ -1,7 +1,7 @@
 package au.lupine.earthy.fabric.object;
 
-import com.google.common.collect.ImmutableMap;
 import au.lupine.earthy.fabric.EarthyFabric;
+import com.google.common.collect.ImmutableMap;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;

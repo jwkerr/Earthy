@@ -1,7 +1,7 @@
 package au.lupine.earthy.fabric.object.listener;
 
-import au.lupine.earthy.common.object.Listener;
 import au.lupine.earthy.fabric.EarthyFabric;
+import au.lupine.earthy.fabric.object.base.Listener;
 import au.lupine.earthy.fabric.object.base.Manager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 

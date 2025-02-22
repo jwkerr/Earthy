@@ -1,0 +1,60 @@
+package au.lupine.earthy.fabric.object.listener;
+
+import au.lupine.earthy.fabric.EarthyFabric;
+import au.lupine.earthy.fabric.object.ChatChannel;
+import au.lupine.earthy.fabric.object.base.Listener;
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
+import net.kyori.adventure.platform.modcommon.MinecraftClientAudiences;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class CurrentChatChannelListener implements Listener {
+
+    private static ChatChannel currentChannel;
+
+    @Override
+    public void register() {
+        MinecraftClientAudiences audiences = MinecraftClientAudiences.of();
+
+        ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
+            Component component = audiences.asAdventure(message);
+
+            String string = PlainTextComponentSerializer.plainText().serialize(component);
+
+            TextColor colour = component.color();
+            if (string.startsWith("You are currently in") && colour != null && colour.compareTo(NamedTextColor.GOLD) == 0)
+                currentChannel = getCurrentChannel(string);
+
+            String youHaveJoined = "» You have joined the channel: ";
+            if (string.startsWith(youHaveJoined)) {
+                String cut = string.replace(youHaveJoined, "");
+                currentChannel = ChatChannel.getOrDefault(cut.substring(0, cut.length() - 1));
+            }
+        });
+    }
+
+    public static ChatChannel getCurrentChannel() {
+        return currentChannel;
+    }
+
+    private ChatChannel getCurrentChannel(String message) {
+        EarthyFabric.logInfo(message);
+
+        Pattern pattern = Pattern.compile("(\\w+) \\(write\\)");
+        Matcher matcher = pattern.matcher(message);
+
+        if (matcher.find()) {
+            String name = matcher.group(1);
+            if (name == null) return ChatChannel.GLOBAL;
+
+            return ChatChannel.getOrDefault(name);
+        } else {
+            return ChatChannel.GLOBAL;
+        }
+    }
+}

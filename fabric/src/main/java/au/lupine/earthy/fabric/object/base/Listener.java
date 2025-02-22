@@ -1,4 +1,4 @@
-package au.lupine.earthy.common.object;
+package au.lupine.earthy.fabric.object.base;
 
 @FunctionalInterface
 public interface Listener {
