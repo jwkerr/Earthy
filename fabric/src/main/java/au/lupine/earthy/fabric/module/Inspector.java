@@ -1,9 +1,9 @@
 package au.lupine.earthy.fabric.module;
 
 import au.lupine.earthy.fabric.object.NBTTraversal;
+import au.lupine.earthy.fabric.object.base.Module;
 import au.lupine.earthy.fabric.object.base.Tickable;
 import au.lupine.earthy.fabric.object.wrapper.HeadData;
-import au.lupine.earthy.fabric.object.base.Module;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
