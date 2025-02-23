@@ -40,8 +40,6 @@ public class InspectionTickable implements Tickable {
 
     @Override
     public void onTick() {
-        if (!SessionManager.getInstance().isPlayerOnEarthMC()) return;
-
         while (INSPECT_KEY.consumeClick()) inspect();
     }
 
@@ -57,7 +55,7 @@ public class InspectionTickable implements Tickable {
         switch (getTarget(player)) {
             case EntityHitResult ehr -> {
                 Entity entity = ehr.getEntity();
-                if (entity instanceof Player other) inspectPlayer(other);
+                if (entity instanceof Player other && SessionManager.getInstance().isPlayerOnEarthMC()) inspectPlayer(other);
 
                 EntityDataAccessor accessor = new EntityDataAccessor(entity);
                 sendHeadData(player, getHeadData(accessor));
