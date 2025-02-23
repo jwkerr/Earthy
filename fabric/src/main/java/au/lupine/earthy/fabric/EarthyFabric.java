@@ -50,13 +50,6 @@ public class EarthyFabric implements ClientModInitializer {
         }
     }
 
-    public static void registerTickables(Tickable... tickables) {
-        for (Tickable tickable : tickables) {
-            tickable.startTick();
-            logInfo("Tickable " + tickable.getClass().getSimpleName() + " registered");
-        }
-    }
-
     /**
      * @return A library giving ease of access to most of EarthMC's API
      */

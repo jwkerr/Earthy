@@ -48,7 +48,7 @@ public final class Lifecycle extends Module implements Tickable {
                 if (!hud.equals(HUDType.NONE)) handler.sendCommand(hud.getCommand());
 
                 updateOnlinePlayers();
-            }, 3L, TimeUnit.SECONDS);
+            }, 6L, TimeUnit.SECONDS);
         });
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> PLAYER_INFO.clear());

@@ -52,8 +52,6 @@ public final class ChatPreview extends Module {
     }
 
     private ChatChannel parseCurrentChatChannel(String message) {
-        EarthyFabric.logInfo(message);
-
         Pattern pattern = Pattern.compile("(\\w+) \\(write\\)");
         Matcher matcher = pattern.matcher(message);
 
