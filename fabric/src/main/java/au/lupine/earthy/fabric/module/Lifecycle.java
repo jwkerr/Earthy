@@ -17,7 +17,7 @@ import net.minecraft.client.multiplayer.ServerData;
 import java.util.List;
 import java.util.concurrent.*;
 
-public final class Lifecycle extends Module implements Tickable {
+public final class Lifecycle extends Module {
 
     private static Lifecycle instance;
 
@@ -52,18 +52,12 @@ public final class Lifecycle extends Module implements Tickable {
         });
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> PLAYER_INFO.clear());
-    }
 
-    @Override
-    public int getInterval() {
-        return 6000; // 5 minutes
-    }
+        Tickable.register(() -> {
+            if (!isPlayerOnEarthMC()) return;
 
-    @Override
-    public void onTick() {
-        if (!isPlayerOnEarthMC()) return;
-
-        updateOnlinePlayers();
+            updateOnlinePlayers();
+        }, 6000L);
     }
 
     private void updateOnlinePlayers() {

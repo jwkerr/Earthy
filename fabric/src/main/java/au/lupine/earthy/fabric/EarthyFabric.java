@@ -4,7 +4,6 @@ import au.lupine.earthy.fabric.module.ChatPreview;
 import au.lupine.earthy.fabric.module.Inspector;
 import au.lupine.earthy.fabric.module.Lifecycle;
 import au.lupine.earthy.fabric.object.base.Module;
-import au.lupine.earthy.fabric.object.base.Tickable;
 import au.lupine.earthy.fabric.object.config.Config;
 import au.lupine.emcapiclient.EMCAPIClient;
 import au.lupine.emcapiclient.object.wrapper.Server;

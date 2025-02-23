@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public final class Inspector extends Module implements Tickable {
+public final class Inspector extends Module {
 
     private static Inspector instance;
 
@@ -59,11 +59,6 @@ public final class Inspector extends Module implements Tickable {
     public static Inspector getInstance() {
         if (instance == null) instance = new Inspector();
         return instance;
-    }
-
-    @Override
-    public void onTick() {
-        while (INSPECT_KEY.consumeClick()) inspect();
     }
 
     @Override
@@ -88,7 +83,9 @@ public final class Inspector extends Module implements Tickable {
 
         HEAD_CATEGORIES.forEach(loadHeads);
 
-        startTick();
+        Tickable.register(() -> {
+            while (INSPECT_KEY.consumeClick()) inspect();
+        });
     }
 
     public @Nullable HeadData getHeadInfoByValue(@NotNull String value) {

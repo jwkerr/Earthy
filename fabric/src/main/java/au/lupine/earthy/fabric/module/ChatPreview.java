@@ -1,6 +1,5 @@
 package au.lupine.earthy.fabric.module;
 
-import au.lupine.earthy.fabric.EarthyFabric;
 import au.lupine.earthy.fabric.object.base.Module;
 import au.lupine.earthy.fabric.object.wrapper.ChatChannel;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
