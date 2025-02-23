@@ -1,15 +1,11 @@
 package au.lupine.earthy.fabric;
 
-import au.lupine.earthy.fabric.manager.HeadDataManager;
-import au.lupine.earthy.fabric.manager.SessionManager;
-import au.lupine.earthy.fabric.object.base.Listener;
-import au.lupine.earthy.fabric.object.base.Manager;
+import au.lupine.earthy.fabric.module.ChatPreview;
+import au.lupine.earthy.fabric.module.Inspector;
+import au.lupine.earthy.fabric.module.Lifecycle;
+import au.lupine.earthy.fabric.object.base.Module;
 import au.lupine.earthy.fabric.object.base.Tickable;
 import au.lupine.earthy.fabric.object.config.Config;
-import au.lupine.earthy.fabric.listener.AutoHUDListener;
-import au.lupine.earthy.fabric.listener.ClientStoppingListener;
-import au.lupine.earthy.fabric.listener.CurrentChatChannelListener;
-import au.lupine.earthy.fabric.listener.TickableListener;
 import au.lupine.earthy.fabric.tickable.InspectionTickable;
 import au.lupine.emcapiclient.EMCAPIClient;
 import au.lupine.emcapiclient.object.wrapper.Server;
@@ -28,7 +24,7 @@ public class EarthyFabric implements ClientModInitializer {
     private static final Logger LOGGER = LoggerFactory.getLogger(ID);
     private static final String LOG_PREFIX = "[Earthy] ";
 
-    public static final List<Manager> MANAGERS = new ArrayList<>();
+    public static final List<Module> MODULES = new ArrayList<>();
 
     private static EMCAPIClient api;
 
@@ -38,48 +34,33 @@ public class EarthyFabric implements ClientModInitializer {
 
         api = new EMCAPIClient(new Server(Config.server.toLowerCase()));
 
-        registerManagers(
-                HeadDataManager.getInstance(),
-                SessionManager.getInstance()
+        registerModules(
+                ChatPreview.getInstance(),
+                Inspector.getInstance(),
+                Lifecycle.getInstance()
         );
 
-        for (Manager manager : MANAGERS) {
-            manager.enable();
-        }
-
-        registerListeners(
-                new AutoHUDListener(),
-                new ClientStoppingListener(),
-                new CurrentChatChannelListener(),
-                new TickableListener(),
-                SessionManager.getInstance()
-        );
-
-        registerTickables(
-                new InspectionTickable()
-        );
-    }
-
-    private void registerManagers(@NotNull Manager... managers) {
-        for (Manager manager : managers) {
-            if (!MANAGERS.contains(manager)) MANAGERS.add(manager);
+        for (Module module : MODULES) {
+            module.enable();
         }
     }
 
-    public static void registerListeners(Listener... listeners) {
-        for (Listener listener : listeners) {
-            listener.register();
-            logInfo("Event listener " + listener.getClass().getSimpleName() + " registered");
+    private void registerModules(@NotNull Module... modules) {
+        for (Module module : modules) {
+            if (!MODULES.contains(module)) MODULES.add(module);
         }
     }
 
     public static void registerTickables(Tickable... tickables) {
         for (Tickable tickable : tickables) {
-            tickable.register();
+            tickable.startTick();
             logInfo("Tickable " + tickable.getClass().getSimpleName() + " registered");
         }
     }
 
+    /**
+     * @return A library giving ease of access to most of EarthMC's API
+     */
     public static EMCAPIClient getAPI() {
         return api;
     }

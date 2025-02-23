@@ -1,4 +1,4 @@
-package au.lupine.earthy.fabric.object;
+package au.lupine.earthy.fabric.object.hook;
 
 import au.lupine.earthy.fabric.EarthyFabric;
 import com.google.common.collect.ImmutableMap;

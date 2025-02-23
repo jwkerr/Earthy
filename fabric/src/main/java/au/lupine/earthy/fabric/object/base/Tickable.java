@@ -12,7 +12,7 @@ public interface Tickable {
     Map<Tickable, Integer> TICKS_PASSED = new HashMap<>();
 
     /**
-     * @return The ticks between each time the object is ticked
+     * @return The Minecraft ticks between each time this object is ticked
      */
     default int getInterval() {
         return 0;
@@ -32,7 +32,7 @@ public interface Tickable {
         }
     }
 
-    default void register() {
+    default void startTick() {
         TICKABLES.add(this);
     }
 

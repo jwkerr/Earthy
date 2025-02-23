@@ -1,6 +1,7 @@
 package au.lupine.earthy.fabric.mixin;
 
-import au.lupine.earthy.fabric.manager.SessionManager;
+import au.lupine.earthy.fabric.module.Lifecycle;
+import au.lupine.earthy.fabric.object.config.Config;
 import au.lupine.emcapiclient.object.apiobject.Player;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.kyori.adventure.platform.modcommon.MinecraftClientAudiences;
@@ -38,11 +39,13 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
             )
     )
     private void inject(PlayerRenderState playerRenderState, Component component, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, CallbackInfo ci) {
-        if (!SessionManager.getInstance().isPlayerOnEarthMC()) return;
+        if (!Lifecycle.getInstance().isPlayerOnEarthMC()) return;
+
+        if (!Config.showAffiliationAboveHead) return;
 
         Player player;
         try {
-            player = SessionManager.getPlayerInfo().stream().filter(current -> {
+            player = Lifecycle.getPlayerInfo().stream().filter(current -> {
                 String[] split = component.getString().split(" ");
                 String name = split[split.length - 1];
 

@@ -1,11 +1,13 @@
-package au.lupine.earthy.fabric.manager;
+package au.lupine.earthy.fabric.module;
 
 import au.lupine.earthy.fabric.EarthyFabric;
-import au.lupine.earthy.fabric.object.base.Listener;
-import au.lupine.earthy.fabric.object.base.Manager;
+import au.lupine.earthy.fabric.object.base.Module;
 import au.lupine.earthy.fabric.object.base.Tickable;
+import au.lupine.earthy.fabric.object.config.Config;
+import au.lupine.earthy.fabric.object.wrapper.HUDType;
 import au.lupine.emcapiclient.object.apiobject.Player;
 import au.lupine.emcapiclient.object.exception.FailedRequestException;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -15,16 +17,16 @@ import net.minecraft.client.multiplayer.ServerData;
 import java.util.List;
 import java.util.concurrent.*;
 
-public class SessionManager extends Manager implements Listener, Tickable {
+public final class Lifecycle extends Module implements Tickable {
 
-    private static SessionManager instance;
+    private static Lifecycle instance;
 
     private static final List<Player> PLAYER_INFO = new CopyOnWriteArrayList<>();
 
-    private SessionManager() {}
+    private Lifecycle() {}
 
-    public static SessionManager getInstance() {
-        if (instance == null) instance = new SessionManager();
+    public static Lifecycle getInstance() {
+        if (instance == null) instance = new Lifecycle();
         return instance;
     }
 
@@ -33,15 +35,20 @@ public class SessionManager extends Manager implements Listener, Tickable {
     }
 
     @Override
-    public void register() {
+    public void enable() {
+        ClientTickEvents.END_CLIENT_TICK.register(client -> Tickable.tick());
+
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
             scheduler.schedule(() -> {
                 if (!isPlayerOnEarthMC()) return;
 
+                HUDType hud = Config.autoHUD;
+                if (!hud.equals(HUDType.NONE)) handler.sendCommand(hud.getCommand());
+
                 updateOnlinePlayers();
-            }, 6L, TimeUnit.SECONDS);
+            }, 3L, TimeUnit.SECONDS);
         });
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> PLAYER_INFO.clear());

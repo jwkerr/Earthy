@@ -11,5 +11,5 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "plugin": "au.lupine.earthy.fabric.object.ConditionalMixinPlugin"
+  "plugin": "au.lupine.earthy.fabric.object.hook.ConditionalMixinPlugin"
 }

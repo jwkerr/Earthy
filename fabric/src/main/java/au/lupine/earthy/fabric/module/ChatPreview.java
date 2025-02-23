@@ -1,8 +1,8 @@
-package au.lupine.earthy.fabric.listener;
+package au.lupine.earthy.fabric.module;
 
 import au.lupine.earthy.fabric.EarthyFabric;
+import au.lupine.earthy.fabric.object.base.Module;
 import au.lupine.earthy.fabric.object.wrapper.ChatChannel;
-import au.lupine.earthy.fabric.object.base.Listener;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.kyori.adventure.platform.modcommon.MinecraftClientAudiences;
 import net.kyori.adventure.text.Component;
@@ -13,12 +13,21 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CurrentChatChannelListener implements Listener {
+public final class ChatPreview extends Module {
 
-    private static ChatChannel currentChannel;
+    private static ChatPreview instance;
+
+    private static ChatChannel currentChatChannel;
+
+    private ChatPreview() {}
+
+    public static ChatPreview getInstance() {
+        if (instance == null) instance = new ChatPreview();
+        return instance;
+    }
 
     @Override
-    public void register() {
+    public void enable() {
         MinecraftClientAudiences audiences = MinecraftClientAudiences.of();
 
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
@@ -28,21 +37,21 @@ public class CurrentChatChannelListener implements Listener {
 
             TextColor colour = component.color();
             if (string.startsWith("You are currently in") && colour != null && colour.compareTo(NamedTextColor.GOLD) == 0)
-                currentChannel = getCurrentChannel(string);
+                currentChatChannel = parseCurrentChatChannel(string);
 
             String youHaveJoined = "» You have joined the channel: ";
             if (string.startsWith(youHaveJoined)) {
                 String cut = string.replace(youHaveJoined, "");
-                currentChannel = ChatChannel.getOrDefault(cut.substring(0, cut.length() - 1));
+                currentChatChannel = ChatChannel.getOrDefault(cut.substring(0, cut.length() - 1));
             }
         });
     }
 
-    public static ChatChannel getCurrentChannel() {
-        return currentChannel;
+    public ChatChannel getCurrentChatChannel() {
+        return currentChatChannel;
     }
 
-    private ChatChannel getCurrentChannel(String message) {
+    private ChatChannel parseCurrentChatChannel(String message) {
         EarthyFabric.logInfo(message);
 
         Pattern pattern = Pattern.compile("(\\w+) \\(write\\)");

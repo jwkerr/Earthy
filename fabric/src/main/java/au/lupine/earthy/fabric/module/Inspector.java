@@ -1,10 +1,13 @@
-package au.lupine.earthy.fabric.tickable;
+package au.lupine.earthy.fabric.module;
 
-import au.lupine.earthy.fabric.manager.HeadDataManager;
-import au.lupine.earthy.fabric.manager.SessionManager;
-import au.lupine.earthy.fabric.object.wrapper.HeadData;
 import au.lupine.earthy.fabric.object.NBTTraversal;
 import au.lupine.earthy.fabric.object.base.Tickable;
+import au.lupine.earthy.fabric.object.wrapper.HeadData;
+import au.lupine.earthy.fabric.object.base.Module;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -27,20 +30,69 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
-public class InspectionTickable implements Tickable {
+public final class Inspector extends Module implements Tickable {
+
+    private static Inspector instance;
 
     private static final KeyMapping INSPECT_KEY = KeyBindingHelper.registerKeyBinding(
             new KeyMapping("key.earthy.inspect", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_G, "category.earthy")
     );
 
+    private static final List<String> HEAD_CATEGORIES = List.of("alphabet", "animals", "blocks", "decoration", "food-drinks", "humanoid", "humans", "miscellaneous", "monsters", "plants");
+    private static final Map<String, HeadData> HEAD_MAP = new HashMap<>();
+
+    private Inspector() {}
+
+    public static Inspector getInstance() {
+        if (instance == null) instance = new Inspector();
+        return instance;
+    }
+
     @Override
     public void onTick() {
         while (INSPECT_KEY.consumeClick()) inspect();
+    }
+
+    @Override
+    public void enable() {
+        Consumer<String> loadHeads = category -> {
+            InputStream is = Inspector.class.getClassLoader().getResourceAsStream("assets/earthy/categories/" + category + ".json");
+            if (is == null) return;
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+            JsonArray array = JsonParser.parseReader(reader).getAsJsonArray();
+
+            for (JsonElement element : array) {
+                JsonObject object = element.getAsJsonObject();
+                String value = object.get("value").getAsString();
+                String name = object.get("name").getAsString();
+                List<String> tags = List.of(object.get("tags").getAsString().split(","));
+
+                HeadData head = new HeadData(value, name, tags);
+                HEAD_MAP.put(value, head);
+            }
+        };
+
+        HEAD_CATEGORIES.forEach(loadHeads);
+
+        startTick();
+    }
+
+    public @Nullable HeadData getHeadInfoByValue(@NotNull String value) {
+        return HEAD_MAP.get(value);
     }
 
     private void inspect() {
@@ -55,7 +107,7 @@ public class InspectionTickable implements Tickable {
         switch (getTarget(player)) {
             case EntityHitResult ehr -> {
                 Entity entity = ehr.getEntity();
-                if (entity instanceof Player other && SessionManager.getInstance().isPlayerOnEarthMC()) inspectPlayer(other);
+                if (entity instanceof Player other && Lifecycle.getInstance().isPlayerOnEarthMC()) inspectPlayer(other);
 
                 EntityDataAccessor accessor = new EntityDataAccessor(entity);
                 sendHeadData(player, getHeadData(accessor));
@@ -86,7 +138,7 @@ public class InspectionTickable implements Tickable {
         traversal.traverse();
 
         for (String result : traversal.getResult()) {
-            heads.add(HeadDataManager.getInstance().getHeadInfoByValue(result));
+            heads.add(Inspector.getInstance().getHeadInfoByValue(result));
         }
 
         return heads;

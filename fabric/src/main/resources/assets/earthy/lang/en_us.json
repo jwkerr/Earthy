@@ -1,14 +1,18 @@
 {
+  "key.earthy.inspect": "Inspect",
+  "category.earthy": "Earthy",
+  "msg.earthy.head_not_available": "Head not in internal database",
+  "msg.earthy.nomad": "Nomad",
   "yacl3.config.earthy:config.category.settings": "Settings",
+  "yacl3.config.earthy:config.server": "Server",
+  "yacl3.config.earthy:config.server.desc": "The name of the server to be used in API requests, do not change this unless there is a server reset or you will probably break things",
+  "yacl3.config.earthy:config.showAffiliationAboveHead": "Show Affiliation Above Head",
+  "yacl3.config.earthy:config.showAffiliationAboveHead.desc": "If enabled, players will have their town and nation displayed above their head",
+  "yacl3.config.earthy:config.previewCurrentChatChannel": "Preview Current Chat Channel",
+  "yacl3.config.earthy:config.previewCurrentChatChannel.desc": "If enabled, your chat box will show a preview of the current channel you are part of when empty",
   "yacl3.config.earthy:config.autoHUD": "AutoHUD",
   "yacl3.config.earthy:config.autoHUD.desc": "Automatically enable a Towny HUD type on connection to EarthMC",
   "yacl3.config.enum.HUDType.none": "None",
   "yacl3.config.enum.HUDType.perm": "Perm",
-  "yacl3.config.enum.HUDType.map": "Map",
-  "yacl3.config.earthy:config.server": "Server",
-  "yacl3.config.earthy:config.server.desc": "The name of the server to be used in API requests, do not change this unless there is a server reset or you will probably break things",
-  "key.earthy.inspect": "Inspect",
-  "category.earthy": "Earthy",
-  "msg.earthy.head_not_available": "Head not in internal database",
-  "msg.earthy.nomad": "Nomad"
+  "yacl3.config.enum.HUDType.map": "Map"
 }
