@@ -34,8 +34,7 @@ public abstract class EditBoxMixin extends AbstractWidget {
             method = "renderWidget",
             at = @At(
                     value = "INVOKE",
-                    target = "Ljava/lang/String;isEmpty()Z",
-                    ordinal = 0
+                    target = "Ljava/lang/String;isEmpty()Z"
             )
     )
     public void inject(GuiGraphics guiGraphics, int i, int j, float f, CallbackInfo ci, @Local(ordinal = 5) int n, @Local(ordinal = 8) int q) {
