@@ -57,7 +57,7 @@ public final class Lifecycle extends Module {
             if (!isPlayerOnEarthMC()) return;
 
             updateOnlinePlayers();
-        }, 6000L);
+        }, 3L, TimeUnit.MINUTES);
     }
 
     private void updateOnlinePlayers() {
