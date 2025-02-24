@@ -1,4 +1,4 @@
-package au.lupine.earthy.fabric.mixin;
+package au.lupine.earthy.fabric.mixin.xaeros;
 
 import au.lupine.earthy.fabric.module.Lifecycle;
 import au.lupine.earthy.fabric.object.config.Config;
@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xaero.common.HudMod;
 
 @Mixin(value = HudMod.class, remap = false)
-public class HudModMixin {
+public abstract class HudModMixin {
 
     @Inject(method = "isFairPlay", at = @At("HEAD"), cancellable = true)
     private void inject(CallbackInfoReturnable<Boolean> cir) {

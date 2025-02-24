@@ -3,17 +3,15 @@
   "minVersion": "0.8",
   "package": "au.lupine.earthy.fabric.mixin",
   "compatibilityLevel": "JAVA_21",
+  "plugin": "au.lupine.earthy.fabric.object.hook.ConditionalMixinPlugin",
   "client": [
     "ClientPacketListenerMixin",
     "EditBoxMixin",
     "PlayerRendererMixin",
-    "RadarStateUpdateMixin"
+    "xaeros.HudModMixin",
+    "xaeros.RadarStateUpdateMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "plugin": "au.lupine.earthy.fabric.object.hook.ConditionalMixinPlugin",
-  "mixins": [
-    "HudModMixin"
-  ]
+  }
 }

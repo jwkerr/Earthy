@@ -1,4 +1,4 @@
-package au.lupine.earthy.fabric.mixin;
+package au.lupine.earthy.fabric.mixin.xaeros;
 
 import au.lupine.earthy.fabric.module.Lifecycle;
 import au.lupine.earthy.fabric.object.config.Config;
@@ -25,7 +25,7 @@ import xaero.hud.minimap.radar.state.RadarStateUpdater;
 import java.util.Set;
 
 @Mixin(value = RadarStateUpdater.class)
-public class RadarStateUpdateMixin {
+public abstract class RadarStateUpdateMixin {
 
     @Unique private static final Set<Block> TRANSPARENT_BLOCKS = Set.of(
             Blocks.GLASS,
