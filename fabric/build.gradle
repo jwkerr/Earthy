@@ -18,6 +18,18 @@ repositories {
     }
 
     maven { url "https://jitpack.io" }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 dependencies {
@@ -31,6 +43,7 @@ dependencies {
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
     modImplementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
     modImplementation "net.kyori:adventure-platform-mod-shared-fabric-repack:${project.adventure_version}"
+    modImplementation "maven.modrinth:xaeros-minimap:${project.xaeros_minimap_version}"
 }
 
 processResources {

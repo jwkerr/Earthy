@@ -42,6 +42,11 @@ public class Config {
 
     @SerialEntry
     @AutoGen(category = SETTINGS)
+    @Boolean
+    public static boolean showUnobscuredPlayersOnMap = true;
+
+    @SerialEntry
+    @AutoGen(category = SETTINGS)
     @EnumCycler
     public static HUDType autoHUD = HUDType.PERM;
 }

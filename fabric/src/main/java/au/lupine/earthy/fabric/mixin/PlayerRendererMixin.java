@@ -45,7 +45,7 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
 
         Player player;
         try {
-            player = Lifecycle.getPlayerInfo().stream().filter(current -> {
+            player = Lifecycle.getInstance().getPlayerInfo().stream().filter(current -> {
                 String[] split = component.getString().split(" ");
                 String name = split[split.length - 1];
 

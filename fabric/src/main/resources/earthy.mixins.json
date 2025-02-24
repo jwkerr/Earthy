@@ -6,10 +6,14 @@
   "client": [
     "ClientPacketListenerMixin",
     "EditBoxMixin",
-    "PlayerRendererMixin"
+    "PlayerRendererMixin",
+    "RadarStateUpdateMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "plugin": "au.lupine.earthy.fabric.object.hook.ConditionalMixinPlugin"
+  "plugin": "au.lupine.earthy.fabric.object.hook.ConditionalMixinPlugin",
+  "mixins": [
+    "HudModMixin"
+  ]
 }

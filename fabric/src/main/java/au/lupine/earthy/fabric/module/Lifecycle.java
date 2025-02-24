@@ -30,10 +30,6 @@ public final class Lifecycle extends Module {
         return instance;
     }
 
-    public static List<Player> getPlayerInfo() {
-        return PLAYER_INFO;
-    }
-
     @Override
     public void enable() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> Tickable.tick());
@@ -58,6 +54,10 @@ public final class Lifecycle extends Module {
 
             updateOnlinePlayers();
         }, 3L, TimeUnit.MINUTES);
+    }
+
+    public List<Player> getPlayerInfo() {
+        return PLAYER_INFO;
     }
 
     private void updateOnlinePlayers() {

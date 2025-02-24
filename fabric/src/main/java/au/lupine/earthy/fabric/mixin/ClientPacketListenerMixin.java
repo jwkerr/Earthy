@@ -30,7 +30,7 @@ public abstract class ClientPacketListenerMixin {
 
         UUID uuid = playerInfo.getProfile().getId();
 
-        List<Player> players = Lifecycle.getPlayerInfo();
+        List<Player> players = Lifecycle.getInstance().getPlayerInfo();
         if (players.stream().map(Player::getUUID).anyMatch(currentUUID -> currentUUID.equals(uuid))) return;
 
         CompletableFuture.runAsync(() -> {
