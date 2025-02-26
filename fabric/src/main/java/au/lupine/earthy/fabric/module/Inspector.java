@@ -104,10 +104,18 @@ public final class Inspector extends Module {
         switch (ProjectileUtil.getHitResultOnViewVector(player, entity -> true, 64D)) {
             case EntityHitResult ehr -> {
                 Entity entity = ehr.getEntity();
-                if (entity instanceof Player other && Lifecycle.getInstance().isPlayerOnEarthMC()) inspectPlayer(other);
 
                 EntityDataAccessor accessor = new EntityDataAccessor(entity);
-                sendHeadData(player, getHeadData(accessor));
+
+                boolean isPlayerOnEarthMC = Lifecycle.getInstance().isPlayerOnEarthMC();
+
+                if (entity instanceof Player && isPlayerOnEarthMC && player.isCrouching()) {
+                    sendHeadData(player, getHeadData(accessor));
+                } else if (entity instanceof Player other && isPlayerOnEarthMC) {
+                    inspectPlayer(other);
+                } else {
+                    sendHeadData(player, getHeadData(accessor));
+                }
             }
             case BlockHitResult bhr -> {
                 BlockPos pos = bhr.getBlockPos();
