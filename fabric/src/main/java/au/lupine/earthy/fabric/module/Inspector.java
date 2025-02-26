@@ -74,7 +74,15 @@ public final class Inspector extends Module {
                 JsonObject object = element.getAsJsonObject();
                 String value = object.get("value").getAsString();
                 String name = object.get("name").getAsString();
-                List<String> tags = List.of(object.get("tags").getAsString().split(","));
+
+                String tagsString = object.get("tags").getAsString();
+
+                List<String> tags;
+                if (tagsString.isEmpty()) {
+                    tags = List.of();
+                } else {
+                    tags = List.of(tagsString.split(","));
+                }
 
                 HeadData head = new HeadData(value, name, tags);
                 HEAD_MAP.put(value, head);
