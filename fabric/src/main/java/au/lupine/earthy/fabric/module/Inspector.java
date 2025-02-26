@@ -101,7 +101,7 @@ public final class Inspector extends Module {
         ClientLevel level = client.level;
         if (level == null) return;
 
-        switch (getTarget(player)) {
+        switch (ProjectileUtil.getHitResultOnViewVector(player, entity -> true, 64D)) {
             case EntityHitResult ehr -> {
                 Entity entity = ehr.getEntity();
                 if (entity instanceof Player other && Lifecycle.getInstance().isPlayerOnEarthMC()) inspectPlayer(other);
@@ -170,23 +170,5 @@ public final class Inspector extends Module {
         if (cpl == null) return;
 
         cpl.sendCommand("towny:res " + player.getName().getString());
-    }
-
-    private @NotNull HitResult getTarget(LocalPlayer player) {
-        ClientLevel level = player.clientLevel;
-
-        Vec3 eyePos = player.getEyePosition(1.0F);
-        player.getRotationVector().normalized().scale(64);
-        Vec3 direction = player.getViewVector(1.0F).normalize().scale(64);
-
-        Vec3 endPos = eyePos.add(direction);
-        AABB box = new AABB(eyePos, endPos);
-
-        EntityHitResult ehr = ProjectileUtil.getEntityHitResult(level, player, eyePos, endPos, box, entity -> true);
-        BlockHitResult bhr = (BlockHitResult) player.pick(64, 1.0F, false);
-
-        if (ehr == null) return bhr;
-
-        return ehr.distanceTo(player) < bhr.distanceTo(player) ? ehr : bhr;
     }
 }
