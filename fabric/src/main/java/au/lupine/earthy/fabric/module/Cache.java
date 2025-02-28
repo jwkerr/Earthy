@@ -13,7 +13,7 @@ import net.minecraft.client.multiplayer.ClientPacketListener;
 import java.util.List;
 import java.util.concurrent.*;
 
-public class Cache extends Module {
+public final class Cache extends Module {
 
     private static Cache instance;
 

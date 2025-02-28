@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class AutoHUD extends Module {
+public final class AutoHUD extends Module {
 
     private static AutoHUD instance;
 
