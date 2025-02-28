@@ -1,7 +1,8 @@
 package au.lupine.earthy.fabric.mixin;
 
 import au.lupine.earthy.fabric.EarthyFabric;
-import au.lupine.earthy.fabric.module.Lifecycle;
+import au.lupine.earthy.fabric.module.Cache;
+import au.lupine.earthy.fabric.module.Session;
 import au.lupine.emcapiclient.object.apiobject.Player;
 import au.lupine.emcapiclient.object.exception.FailedRequestException;
 import net.minecraft.client.multiplayer.ClientPacketListener;
@@ -24,13 +25,13 @@ public abstract class ClientPacketListenerMixin {
             at = @At("HEAD")
     )
     public void inject(ClientboundPlayerInfoUpdatePacket.Action action, ClientboundPlayerInfoUpdatePacket.Entry entry, PlayerInfo playerInfo, CallbackInfo ci) {
-        if (!Lifecycle.getInstance().isPlayerOnEarthMC()) return;
+        if (!Session.getInstance().isPlayerOnEarthMC()) return;
 
         if (action != ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER) return;
 
         UUID uuid = playerInfo.getProfile().getId();
 
-        List<Player> players = Lifecycle.getInstance().getPlayerInfo();
+        List<Player> players = Cache.getInstance().getCachedPlayers();
         if (players.stream().map(Player::getUUID).anyMatch(currentUUID -> currentUUID.equals(uuid))) return;
 
         CompletableFuture.runAsync(() -> {

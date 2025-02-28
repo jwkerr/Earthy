@@ -42,7 +42,7 @@ dependencies {
 
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
     modImplementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
-    modImplementation include("net.kyori:adventure-platform-fabric:${project.adventure_version}")
+    include modImplementation("net.kyori:adventure-platform-fabric:${project.adventure_version}")
     modImplementation "maven.modrinth:xaeros-minimap:${project.xaeros_minimap_version}"
 
     include modImplementation("io.github.0x3c50.renderer:renderer-fabric:${project.renderer_version}")

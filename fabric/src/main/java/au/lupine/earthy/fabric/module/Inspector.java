@@ -115,7 +115,7 @@ public final class Inspector extends Module {
 
                 EntityDataAccessor accessor = new EntityDataAccessor(entity);
 
-                boolean isPlayerOnEarthMC = Lifecycle.getInstance().isPlayerOnEarthMC();
+                boolean isPlayerOnEarthMC = Session.getInstance().isPlayerOnEarthMC();
 
                 if (entity instanceof Player && isPlayerOnEarthMC && player.isCrouching()) {
                     sendHeadData(player, getHeadData(accessor));

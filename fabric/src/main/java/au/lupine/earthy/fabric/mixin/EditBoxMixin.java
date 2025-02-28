@@ -1,7 +1,7 @@
 package au.lupine.earthy.fabric.mixin;
 
 import au.lupine.earthy.fabric.module.ChatPreview;
-import au.lupine.earthy.fabric.module.Lifecycle;
+import au.lupine.earthy.fabric.module.Session;
 import au.lupine.earthy.fabric.object.config.Config;
 import au.lupine.earthy.fabric.object.wrapper.ChatChannel;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -39,7 +39,7 @@ public abstract class EditBoxMixin extends AbstractWidget {
             )
     )
     public void inject(GuiGraphics guiGraphics, int i, int j, float f, CallbackInfo ci, @Local(ordinal = 5) int n, @Local(ordinal = 8) int q) {
-        if (!Lifecycle.getInstance().isPlayerOnEarthMC()) return;
+        if (!Session.getInstance().isPlayerOnEarthMC()) return;
 
         if (!Config.previewCurrentChatChannel) return;
 

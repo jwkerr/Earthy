@@ -1,6 +1,6 @@
 package au.lupine.earthy.fabric.mixin.xaeros;
 
-import au.lupine.earthy.fabric.module.Lifecycle;
+import au.lupine.earthy.fabric.module.Session;
 import au.lupine.earthy.fabric.object.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -68,9 +68,9 @@ public abstract class RadarStateUpdateMixin {
             )
     )
     private boolean redirect(RadarList instance, Entity entity) {
-        Lifecycle lifecycle = Lifecycle.getInstance();
+        Session session = Session.getInstance();
 
-        if (!lifecycle.isPlayerOnEarthMC()) return instance.add(entity);
+        if (!session.isPlayerOnEarthMC()) return instance.add(entity);
 
         if (!Config.showUnobscuredPlayersOnMap) return false;
 
@@ -83,7 +83,7 @@ public abstract class RadarStateUpdateMixin {
 
         if (player.isSpectator()) return instance.add(other);
 
-        if (!lifecycle.isPlayerInOverworld()) return false;
+        if (!session.isPlayerInOverworld()) return false;
 
         ClientLevel level = client.level;
 

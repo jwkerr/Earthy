@@ -1,8 +1,6 @@
 package au.lupine.earthy.fabric;
 
-import au.lupine.earthy.fabric.module.ChatPreview;
-import au.lupine.earthy.fabric.module.Inspector;
-import au.lupine.earthy.fabric.module.Lifecycle;
+import au.lupine.earthy.fabric.module.*;
 import au.lupine.earthy.fabric.object.base.Module;
 import au.lupine.earthy.fabric.object.config.Config;
 import au.lupine.emcapiclient.EMCAPIClient;
@@ -33,9 +31,11 @@ public class EarthyFabric implements ClientModInitializer {
         api = new EMCAPIClient(new Server(Config.server.toLowerCase()));
 
         registerModules(
+                AutoHUD.getInstance(),
+                Cache.getInstance(),
                 ChatPreview.getInstance(),
                 Inspector.getInstance(),
-                Lifecycle.getInstance()
+                Session.getInstance()
         );
 
         for (Module module : MODULES) {
