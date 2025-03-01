@@ -24,7 +24,7 @@ public abstract class ClientPacketListenerMixin {
             method = "applyPlayerInfoUpdate",
             at = @At("HEAD")
     )
-    public void inject(ClientboundPlayerInfoUpdatePacket.Action action, ClientboundPlayerInfoUpdatePacket.Entry entry, PlayerInfo playerInfo, CallbackInfo ci) {
+    private void inject(ClientboundPlayerInfoUpdatePacket.Action action, ClientboundPlayerInfoUpdatePacket.Entry entry, PlayerInfo playerInfo, CallbackInfo ci) {
         if (!Session.getInstance().isPlayerOnEarthMC()) return;
 
         if (action != ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER) return;

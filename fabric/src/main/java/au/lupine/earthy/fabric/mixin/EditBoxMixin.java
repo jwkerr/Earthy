@@ -38,7 +38,7 @@ public abstract class EditBoxMixin extends AbstractWidget {
                     target = "Ljava/lang/String;isEmpty()Z"
             )
     )
-    public void inject(GuiGraphics guiGraphics, int i, int j, float f, CallbackInfo ci, @Local(ordinal = 5) int n, @Local(ordinal = 8) int q) {
+    private void inject(GuiGraphics guiGraphics, int i, int j, float f, CallbackInfo ci, @Local(ordinal = 5) int n, @Local(ordinal = 8) int q) {
         if (!Session.getInstance().isPlayerOnEarthMC()) return;
 
         if (!Config.previewCurrentChatChannel) return;
