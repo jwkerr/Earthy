@@ -33,6 +33,8 @@ public final class Cache extends Module {
             ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
             scheduler.schedule(() -> {
+                if (!Session.getInstance().isPlayerOnEarthMC()) return;
+
                 updateCachedPlayers();
             }, 6L, TimeUnit.SECONDS);
         });
