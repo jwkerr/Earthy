@@ -1,6 +1,5 @@
 package au.lupine.earthy.fabric.mixin.xaeros;
 
-import au.lupine.earthy.fabric.EarthyFabric;
 import au.lupine.earthy.fabric.module.Session;
 import au.lupine.earthy.fabric.object.config.Config;
 import net.minecraft.client.Minecraft;
@@ -50,7 +49,6 @@ public abstract class RadarStateUpdateMixin {
         int brightness = level.getBrightness(LightLayer.SKY, BlockPos.containing(other.getEyePosition()));
         if (brightness < HIDE_UNDER_LIGHT_LEVEL) return false;
 
-        level.getSkyDarken();
         if (other.isInvisibleTo(player)) return false;
         if (other.isCrouching()) return false;
 
