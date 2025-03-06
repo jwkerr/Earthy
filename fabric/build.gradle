@@ -13,11 +13,11 @@ repositories {
     }
 
     maven {
-        name "Xander Maven"
-        url "https://maven.isxander.dev/releases"
+        name = "Xander Maven"
+        url = "https://maven.isxander.dev/releases"
     }
 
-    maven { url "https://jitpack.io" }
+    maven { url = "https://jitpack.io" }
 
     exclusiveContent {
         forRepository {

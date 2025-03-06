@@ -4,6 +4,7 @@ import au.lupine.earthy.fabric.EarthyFabric;
 import au.lupine.earthy.fabric.object.base.Module;
 import au.lupine.earthy.fabric.object.base.Tickable;
 import au.lupine.emcapiclient.object.apiobject.Player;
+import au.lupine.emcapiclient.object.apiobject.ServerInfo;
 import au.lupine.emcapiclient.object.apiobject.Town;
 import au.lupine.emcapiclient.object.exception.FailedRequestException;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -19,6 +20,7 @@ public final class Cache extends Module {
 
     private static final List<Player> CACHED_PLAYERS = new CopyOnWriteArrayList<>();
     private static final List<Town> CACHED_TOWNS = new CopyOnWriteArrayList<>();
+    private static int votes = 5000;
 
     private Cache() {}
 
@@ -46,7 +48,6 @@ public final class Cache extends Module {
 
         Tickable.register(() -> {
             if (!Session.getInstance().isPlayerOnEarthMC()) return;
-
             updateCachedPlayers();
         }, 3L, TimeUnit.MINUTES);
     }
@@ -80,11 +81,24 @@ public final class Cache extends Module {
         });
     }
 
+    private void updateVotes() {
+        CompletableFuture.runAsync(() -> {
+            try {
+                ServerInfo server = EarthyFabric.getAPI().getServerInfo();
+                votes = server.getNumVotesRemaining();
+            } catch (FailedRequestException ignored) {}
+        });
+    }
+
     public List<Player> getCachedPlayers() {
         return CACHED_PLAYERS;
     }
 
     public static List<Town> getCachedTowns() {
         return CACHED_TOWNS;
+    }
+
+    public static int getVotes() {
+        return votes;
     }
 }
