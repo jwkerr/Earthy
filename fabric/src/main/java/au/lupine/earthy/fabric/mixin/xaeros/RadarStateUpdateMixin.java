@@ -36,6 +36,7 @@ public abstract class RadarStateUpdateMixin {
         if (!(entity instanceof RemotePlayer other)) return false;
 
         Minecraft client = Minecraft.getInstance();
+        
         LocalPlayer player = client.player;
         if (player == null) return instance.add(entity);
 
