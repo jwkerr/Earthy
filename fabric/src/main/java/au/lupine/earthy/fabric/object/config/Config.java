@@ -32,17 +32,17 @@ public class Config {
 
     @SerialEntry
     @AutoGen(category = SETTINGS)
-    @Boolean
+    @Boolean(colored = true)
     public static boolean showAffiliationAboveHead = true;
 
     @SerialEntry
     @AutoGen(category = SETTINGS)
-    @Boolean
+    @Boolean(colored = true)
     public static boolean previewCurrentChatChannel = true;
 
     @SerialEntry
     @AutoGen(category = SETTINGS)
-    @Boolean
+    @Boolean(colored = true)
     public static boolean showUnobscuredPlayersOnMap = true;
 
     @SerialEntry
