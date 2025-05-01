@@ -6,9 +6,11 @@ import au.lupine.earthy.fabric.object.config.Config;
 import au.lupine.emcapiclient.EMCAPIClient;
 import au.lupine.emcapiclient.object.wrapper.Server;
 import net.fabricmc.api.ClientModInitializer;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EarthyFabric implements ClientModInitializer {
@@ -18,13 +20,7 @@ public class EarthyFabric implements ClientModInitializer {
     private static final Logger LOGGER = LoggerFactory.getLogger(ID);
     private static final String LOG_PREFIX = "[Earthy] ";
 
-    public static final List<Module> MODULES = List.of(
-            AutoHUD.getInstance(),
-            Cache.getInstance(),
-            ChatPreview.getInstance(),
-            Inspector.getInstance(),
-            Session.getInstance()
-    );
+    public static final List<Module> MODULES = new ArrayList<>();
 
     private static EMCAPIClient api;
 
@@ -34,8 +30,22 @@ public class EarthyFabric implements ClientModInitializer {
 
         api = new EMCAPIClient(new Server(Config.server.toLowerCase()));
 
+        registerModules(
+                AutoHUD.getInstance(),
+                Cache.getInstance(),
+                ChatPreview.getInstance(),
+                Inspector.getInstance(),
+                Session.getInstance()
+        );
+
         for (Module module : MODULES) {
             module.enable();
+        }
+    }
+
+    private void registerModules(@NotNull Module... modules) {
+        for (Module module : modules) {
+            if (!MODULES.contains(module)) MODULES.add(module);
         }
     }
 
