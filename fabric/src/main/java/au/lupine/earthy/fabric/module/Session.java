@@ -17,11 +17,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.ServerData;
+import org.jetbrains.annotations.Nullable;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -62,7 +65,7 @@ public final class Session extends Module {
                 UUID uuid = Minecraft.getInstance().getGameProfile().getId();
 
                 JsonObject object = JsonParser.parseString(body).getAsJsonObject();
-                if (isUUIDInArray(uuid, object.get("users").getAsJsonArray())) {
+                if (isUUIDAuthenticated(uuid, object.get("users").getAsJsonArray(), null)) {
                     authentication = Authentication.AUTHENTICATED;
                     return;
                 }
@@ -76,9 +79,16 @@ public final class Session extends Module {
                 TownIdentifier town = player.getTown();
                 NationIdentifier nation = player.getNation();
 
-                if ((town != null && isUUIDInArray(town.getUUID(), object.get("towns").getAsJsonArray())) || (nation != null && isUUIDInArray(nation.getUUID(), object.get("nations").getAsJsonArray()))) {
-                    authentication = Authentication.AUTHENTICATED;
-                    return;
+                if (town != null) {
+                    if (isUUIDAuthenticated(town.getUUID(), object.get("towns").getAsJsonArray(), Instant.ofEpochMilli(player.getJoinedTownAt()))) {
+                        authentication = Authentication.AUTHENTICATED;
+                        return;
+                    }
+
+                    if (nation != null && isUUIDAuthenticated(nation.getUUID(), object.get("nations").getAsJsonArray(), Instant.ofEpochMilli(player.getJoinedTownAt()))) {
+                        authentication = Authentication.AUTHENTICATED;
+                        return;
+                    }
                 }
 
                 authentication = Authentication.UNAUTHENTICATED;
@@ -88,10 +98,22 @@ public final class Session extends Module {
         });
     }
 
-    private boolean isUUIDInArray(UUID uuid, JsonArray array) {
+    private boolean isUUIDAuthenticated(UUID uuid, JsonArray array, @Nullable Instant time) {
         for (JsonElement element : array) {
+            JsonObject object = element.getAsJsonObject();
+
             try {
-                if (element.getAsString().equals(uuid.toString())) return true;
+                if (object.get("uuid").getAsString().equals(uuid.toString())) {
+                    if (time == null) return true;
+
+                    JsonElement minSecondsElement = object.get("min_seconds");
+                    if (minSecondsElement == null) return true;
+
+                    long minSeconds = minSecondsElement.getAsLong();
+                    EarthyFabric.logInfo(String.valueOf(minSeconds));
+                    EarthyFabric.logInfo(String.valueOf(Duration.between(time, Instant.now()).getSeconds()));
+                    return Duration.between(time, Instant.now()).getSeconds() > minSeconds;
+                }
             } catch (Exception ignored) {}
         }
 
