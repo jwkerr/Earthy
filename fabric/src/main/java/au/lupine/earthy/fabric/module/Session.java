@@ -19,6 +19,7 @@ import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.ServerData;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -54,6 +55,15 @@ public final class Session extends Module {
     public void authenticate() {
         CompletableFuture.runAsync(() -> {
             try {
+                UUID uuid = Minecraft.getInstance().getGameProfile().getId();
+                Player player = EarthyFabric.getAPI().getPlayerByUUID(uuid);
+                if (player == null) {
+                    authentication = Authentication.FAILED;
+                    return;
+                }
+
+                Instant joinedTownAt = player.getJoinedTownAt() == null ? Instant.now() : Instant.ofEpochMilli(player.getJoinedTownAt());
+
                 HttpResponse<String> response = HttpClient.newHttpClient().send(
                         HttpRequest.newBuilder().GET()
                                 .uri(URI.create("https://gist.githubusercontent.com/jwkerr/4b6fcbd438fc546f23e57210077b00ce/raw/authenticated.json"))
@@ -62,17 +72,10 @@ public final class Session extends Module {
                 );
 
                 String body = response.body();
-                UUID uuid = Minecraft.getInstance().getGameProfile().getId();
 
                 JsonObject object = JsonParser.parseString(body).getAsJsonObject();
-                if (isUUIDAuthenticated(uuid, object.get("users").getAsJsonArray(), null)) {
+                if (isUUIDAuthenticated(uuid, object.get("users").getAsJsonArray(), joinedTownAt)) {
                     authentication = Authentication.AUTHENTICATED;
-                    return;
-                }
-
-                Player player = EarthyFabric.getAPI().getPlayerByUUID(uuid);
-                if (player == null) {
-                    authentication = Authentication.FAILED;
                     return;
                 }
 
@@ -80,22 +83,22 @@ public final class Session extends Module {
                 NationIdentifier nation = player.getNation();
 
                 if (town != null) {
-                    Instant instant = Instant.ofEpochMilli(player.getJoinedTownAt());
-
-                    if (isUUIDAuthenticated(town.getUUID(), object.get("towns").getAsJsonArray(), instant)) {
+                    if (isUUIDAuthenticated(town.getUUID(), object.get("towns").getAsJsonArray(), joinedTownAt)) {
                         authentication = Authentication.AUTHENTICATED;
                         return;
                     }
 
-                    if (nation != null && isUUIDAuthenticated(nation.getUUID(), object.get("nations").getAsJsonArray(), instant)) {
+                    if (nation != null && isUUIDAuthenticated(nation.getUUID(), object.get("nations").getAsJsonArray(), joinedTownAt)) {
                         authentication = Authentication.AUTHENTICATED;
                         return;
                     }
                 }
 
                 authentication = Authentication.UNAUTHENTICATED;
-            } catch (Exception e) {
+            } catch (IOException | InterruptedException e) {
                 authentication = Authentication.FAILED;
+            } catch (Exception e) {
+                authentication = Authentication.UNAUTHENTICATED;
             }
         });
     }
@@ -123,7 +126,7 @@ public final class Session extends Module {
     }
 
     public boolean isPlayerAuthenticated() {
-        return authentication.equals(Authentication.AUTHENTICATED);
+        return authentication.equals(Authentication.AUTHENTICATED) || authentication.equals(Authentication.FAILED);
     }
 
     public Authentication getAuthentication() {
