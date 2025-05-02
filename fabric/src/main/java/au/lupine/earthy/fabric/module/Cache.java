@@ -31,12 +31,13 @@ public final class Cache extends Module {
 
     @Override
     public void enable() {
+        Session session = Session.getInstance();
+
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
             scheduler.schedule(() -> {
-                if (!Session.getInstance().isPlayerOnEarthMC()) return;
-
+                if (!session.isPlayerOnEarthMC() || !session.isPlayerAuthenticated()) return;
                 updateCachedPlayers();
             }, 6L, TimeUnit.SECONDS);
         });
@@ -47,7 +48,8 @@ public final class Cache extends Module {
         });
 
         Tickable.register(() -> {
-            if (!Session.getInstance().isPlayerOnEarthMC()) return;
+            if (!session.isPlayerOnEarthMC() || !session.isPlayerAuthenticated()) return;
+
             updateCachedPlayers();
         }, 3L, TimeUnit.MINUTES);
     }

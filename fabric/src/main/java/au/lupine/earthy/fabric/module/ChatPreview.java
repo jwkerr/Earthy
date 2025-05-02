@@ -30,6 +30,9 @@ public final class ChatPreview extends Module {
         MinecraftClientAudiences audiences = MinecraftClientAudiences.of();
 
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
+            Session session = Session.getInstance();
+            if (!session.isPlayerOnEarthMC() || !session.isPlayerAuthenticated()) return;
+
             Component component;
             try {
                 component = audiences.asAdventure(message);

@@ -39,7 +39,8 @@ public abstract class EditBoxMixin extends AbstractWidget {
             )
     )
     private void inject(GuiGraphics guiGraphics, int i, int j, float f, CallbackInfo ci, @Local(ordinal = 5) int n, @Local(ordinal = 8) int q) {
-        if (!Session.getInstance().isPlayerOnEarthMC()) return;
+        Session session = Session.getInstance();
+        if (!session.isPlayerOnEarthMC() || !session.isPlayerAuthenticated()) return;
 
         if (!Config.previewCurrentChatChannel) return;
 

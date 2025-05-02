@@ -40,7 +40,8 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
             )
     )
     private void inject(PlayerRenderState playerRenderState, Component component, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, CallbackInfo ci) {
-        if (!Session.getInstance().isPlayerOnEarthMC()) return;
+        Session session = Session.getInstance();
+        if (!session.isPlayerOnEarthMC() || !session.isPlayerAuthenticated()) return;
 
         if (!Config.showAffiliationAboveHead) return;
 

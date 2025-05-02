@@ -22,11 +22,13 @@ public final class AutoHUD extends Module {
 
     @Override
     public void enable() {
+        Session session = Session.getInstance();
+
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
             scheduler.schedule(() -> {
-                if (!Session.getInstance().isPlayerOnEarthMC()) return;
+                if (!session.isPlayerOnEarthMC() || !session.isPlayerAuthenticated()) return;
 
                 HUDType hud = Config.autoHUD;
                 if (!hud.equals(HUDType.NONE)) handler.sendCommand(hud.getCommand());

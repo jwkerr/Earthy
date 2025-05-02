@@ -13,7 +13,9 @@ public abstract class HudModMixin {
 
     @Inject(method = "isFairPlay", at = @At("HEAD"), cancellable = true)
     private void inject(CallbackInfoReturnable<Boolean> cir) {
-        if (!Session.getInstance().isPlayerOnEarthMC() && !Config.showUnobscuredPlayersOnMap) return;
+        Session session = Session.getInstance();
+        if ((!session.isPlayerOnEarthMC() || !session.isPlayerAuthenticated()) && !Config.showUnobscuredPlayersOnMap) return;
+
         cir.setReturnValue(false);
     }
 }
