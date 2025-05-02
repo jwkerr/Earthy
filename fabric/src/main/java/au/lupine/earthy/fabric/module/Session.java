@@ -54,6 +54,16 @@ public final class Session extends Module {
     public void authenticate() {
         CompletableFuture.runAsync(() -> {
             try {
+                UUID uuid = Minecraft.getInstance().getGameProfile().getId();
+
+                Player player = EarthyFabric.getAPI().getPlayerByUUID(uuid);
+                if (player == null) {
+                    authentication = Authentication.FAILED;
+                    return;
+                }
+
+                Instant instant = Instant.ofEpochMilli(player.getJoinedTownAt() == null ? 0 : player.getJoinedTownAt());
+
                 HttpResponse<String> response = HttpClient.newHttpClient().send(
                         HttpRequest.newBuilder().GET()
                                 .uri(URI.create("https://gist.githubusercontent.com/jwkerr/4b6fcbd438fc546f23e57210077b00ce/raw/authenticated.json"))
@@ -62,17 +72,10 @@ public final class Session extends Module {
                 );
 
                 String body = response.body();
-                UUID uuid = Minecraft.getInstance().getGameProfile().getId();
 
                 JsonObject object = JsonParser.parseString(body).getAsJsonObject();
-                if (isUUIDAuthenticated(uuid, object.get("users").getAsJsonArray(), null)) {
+                if (isUUIDAuthenticated(uuid, object.get("users").getAsJsonArray(), instant)) {
                     authentication = Authentication.AUTHENTICATED;
-                    return;
-                }
-
-                Player player = EarthyFabric.getAPI().getPlayerByUUID(uuid);
-                if (player == null) {
-                    authentication = Authentication.FAILED;
                     return;
                 }
 
@@ -80,12 +83,12 @@ public final class Session extends Module {
                 NationIdentifier nation = player.getNation();
 
                 if (town != null) {
-                    if (isUUIDAuthenticated(town.getUUID(), object.get("towns").getAsJsonArray(), Instant.ofEpochMilli(player.getJoinedTownAt()))) {
+                    if (isUUIDAuthenticated(town.getUUID(), object.get("towns").getAsJsonArray(), instant)) {
                         authentication = Authentication.AUTHENTICATED;
                         return;
                     }
 
-                    if (nation != null && isUUIDAuthenticated(nation.getUUID(), object.get("nations").getAsJsonArray(), Instant.ofEpochMilli(player.getJoinedTownAt()))) {
+                    if (nation != null && isUUIDAuthenticated(nation.getUUID(), object.get("nations").getAsJsonArray(), instant)) {
                         authentication = Authentication.AUTHENTICATED;
                         return;
                     }
@@ -106,7 +109,7 @@ public final class Session extends Module {
                 if (object.get("uuid").getAsString().equals(uuid.toString())) {
                     if (time == null) return true;
 
-                    JsonElement minSecondsElement = object.get("min_seconds");
+                    JsonElement minSecondsElement = object.get("min_seconds_in_town");
                     if (minSecondsElement == null) return true;
 
                     long minSeconds = minSecondsElement.getAsLong();
