@@ -49,8 +49,10 @@ public abstract class EditBoxMixin extends AbstractWidget {
         ChatChannel currentChannel = ChatPreview.getInstance().getCurrentChatChannel();
         if (currentChannel == null) return;
 
+        boolean isInPartyChat = ChatPreview.getInstance().isInPartyChat();
+
         if (this.suggestion == null && this.value.isEmpty())
-            guiGraphics.drawString(this.font, currentChannel.getName(), q - 1, n, darkenColour(currentChannel.getColour()).value());
+            guiGraphics.drawString(this.font, isInPartyChat ? currentChannel.getName() + " (party)" : currentChannel.getName(), q - 1, n, darkenColour(currentChannel.getColour()).value());
     }
 
     @Unique
