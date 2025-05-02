@@ -3,7 +3,7 @@ plugins {
 }
 
 remapJar {
-    archiveFileName = "earthy-${project.name}-${project.version}.jar"
+    archiveFileName = "earthy-${project.name}-${project.minecraft_version}-${project.version}.jar"
 }
 
 repositories {
