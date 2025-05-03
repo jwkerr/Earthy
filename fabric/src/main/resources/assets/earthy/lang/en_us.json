@@ -12,6 +12,8 @@
   "yacl3.config.earthy:config.previewCurrentChatChannel.desc": "If enabled, your chat box will show a preview of the current channel you are part of when empty",
   "yacl3.config.earthy:config.showUnobscuredPlayersOnMap": "Show Unobscured Players On Map",
   "yacl3.config.earthy:config.showUnobscuredPlayersOnMap.desc": "If enabled, players will show on Xaero's minimap and worldmap provided you have radar enabled and they would show on the webmap",
+  "yacl3.config.earthy:config.warnWhenOverfishing": "Warn When Overfishing",
+  "yacl3.config.earthy:config.warnWhenOverfishing.desc": "If enabled, a warning sound will play when the overfishing alert appears in chat",
   "yacl3.config.earthy:config.autoHUD": "AutoHUD",
   "yacl3.config.earthy:config.autoHUD.desc": "Automatically enable a Towny HUD type on connection to EarthMC",
   "yacl3.config.enum.HUDType.none": "None",

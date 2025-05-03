@@ -39,7 +39,7 @@ public final class ChatPreview extends Module {
             try {
                 component = audiences.asAdventure(message);
             } catch (Exception e) {
-                return; // If something went wrong, in this case probably an enchant parsing, we can just ignore it
+                return;
             }
 
             String string = PlainTextComponentSerializer.plainText().serialize(component);

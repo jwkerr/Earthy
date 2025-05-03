@@ -35,6 +35,7 @@ public class EarthyFabric implements ClientModInitializer {
                 Cache.getInstance(),
                 ChatPreview.getInstance(),
                 Inspector.getInstance(),
+                OverfishingWarning.getInstance(),
                 Session.getInstance()
         );
 

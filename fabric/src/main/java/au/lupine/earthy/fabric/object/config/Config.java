@@ -47,6 +47,11 @@ public class Config {
 
     @SerialEntry
     @AutoGen(category = SETTINGS)
+    @Boolean(colored = true)
+    public static boolean warnWhenOverfishing = true;
+
+    @SerialEntry
+    @AutoGen(category = SETTINGS)
     @EnumCycler
     public static HUDType autoHUD = HUDType.PERM;
 }
