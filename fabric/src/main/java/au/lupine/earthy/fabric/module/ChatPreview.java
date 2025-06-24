@@ -59,6 +59,9 @@ public final class ChatPreview extends Module {
 
             if (string.equals("(mcMMO-Chat) Your chat messages will no longer be automatically delivered to specific chat channels."))
                 inPartyChat = false;
+
+            if (string.equals("You have left that party"))
+                inPartyChat = false;
         });
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> inPartyChat = false);

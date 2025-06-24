@@ -10,7 +10,7 @@ import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
-public class OverfishingWarning extends Module {
+public final class OverfishingWarning extends Module {
 
     private static OverfishingWarning instance;
 
