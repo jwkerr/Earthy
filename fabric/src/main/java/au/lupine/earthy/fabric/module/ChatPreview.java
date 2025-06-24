@@ -57,11 +57,14 @@ public final class ChatPreview extends Module {
             if (string.equals("(mcMMO-Chat) Your chat messages will now be automatically delivered to the Party chat channel."))
                 inPartyChat = true;
 
-            if (string.equals("(mcMMO-Chat) Your chat messages will no longer be automatically delivered to specific chat channels."))
+            if (string.equals("(mcMMO-Chat) Your chat messages will no longer be automatically delivered to specific chat channels.") ||
+                    string.equals("You have left that party") ||
+                    string.equals("The party has been disbanded") ||
+                    string.startsWith("You were kicked from party") ||
+                    string.equals("Error: You are not in a party.")
+            ) {
                 inPartyChat = false;
-
-            if (string.equals("You have left that party"))
-                inPartyChat = false;
+            }
         });
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> inPartyChat = false);
