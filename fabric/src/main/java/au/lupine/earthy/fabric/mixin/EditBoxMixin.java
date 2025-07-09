@@ -4,7 +4,6 @@ import au.lupine.earthy.fabric.module.ChatPreview;
 import au.lupine.earthy.fabric.module.Session;
 import au.lupine.earthy.fabric.object.config.Config;
 import au.lupine.earthy.fabric.object.wrapper.ChatChannel;
-import com.llamalad7.mixinextras.sugar.Local;
 import net.kyori.adventure.text.format.TextColor;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
