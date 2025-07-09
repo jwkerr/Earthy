@@ -6,6 +6,7 @@ import net.minecraft.nbt.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class NBTTraversal {
 
@@ -25,13 +26,16 @@ public class NBTTraversal {
 
     private void traverse(CompoundTag compound) {
         for (String key : keys) {
-            if (compound.contains(key, Tag.TAG_STRING)) {
-                String string = compound.getString(key);
+            if (compound.contains(key)) {
+                Optional<String> optional = compound.getString(key);
+                if (optional.isEmpty()) continue;
+
+                String string = optional.get();
                 if (!result.contains(string)) result.add(string);
             }
         }
 
-        for (String key : compound.getAllKeys()) {
+        for (String key : compound.keySet()) {
             Tag element = compound.get(key);
 
             if (element instanceof CompoundTag next) traverse(next);
