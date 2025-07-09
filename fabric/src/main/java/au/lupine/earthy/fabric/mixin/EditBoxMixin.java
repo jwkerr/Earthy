@@ -25,6 +25,8 @@ public abstract class EditBoxMixin extends AbstractWidget {
 
     @Shadow @Final private Font font;
     @Shadow private @Nullable String suggestion;
+    @Shadow private int textX;
+    @Shadow private int textY;
     @Shadow private String value;
 
     public EditBoxMixin(int i, int j, int k, int l, Component component) {
@@ -32,27 +34,31 @@ public abstract class EditBoxMixin extends AbstractWidget {
     }
 
     @Inject(
-            method = "renderWidget",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Ljava/lang/String;isEmpty()Z"
-            )
+            method = "renderWidget(Lnet/minecraft/client/gui/GuiGraphics;IIF)V",
+            at     = @At("TAIL")
     )
-    private void inject(GuiGraphics guiGraphics, int i, int j, float f, CallbackInfo ci, @Local(ordinal = 5) int n, @Local(ordinal = 8) int q) {
+    private void inject(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
         Session session = Session.getInstance();
         if (!session.isPlayerOnEarthMC() || !session.isPlayerAuthenticated()) return;
 
         if (!Config.previewCurrentChatChannel) return;
 
-        if (!getMessage().equals(Component.translatable("chat.editBox"))) return;
+        if (!this.value.isEmpty() || this.suggestion != null) return;
 
-        ChatChannel currentChannel = ChatPreview.getInstance().getCurrentChatChannel();
-        if (currentChannel == null) return;
+        ChatChannel current = ChatPreview.getInstance().getCurrentChatChannel();
+        if (current == null) return;
 
-        boolean isInPartyChat = ChatPreview.getInstance().isInPartyChat();
+        boolean inParty = ChatPreview.getInstance().isInPartyChat();
+        String label = inParty ? current.getName() + " (party)" : current.getName();
 
-        if (this.suggestion == null && this.value.isEmpty())
-            guiGraphics.drawString(this.font, isInPartyChat ? currentChannel.getName() + " (party)" : currentChannel.getName(), q - 1, n, darkenColour(currentChannel.getColour()).value());
+        guiGraphics.drawString(
+                this.font,
+                label,
+                this.textX - 1,
+                this.textY,
+                darkenColour(current.getColour()).value(),
+                false
+        );
     }
 
     @Unique
