@@ -26,7 +26,7 @@ public abstract class ClientPacketListenerMixin {
     )
     private void inject(ClientboundPlayerInfoUpdatePacket.Action action, ClientboundPlayerInfoUpdatePacket.Entry entry, PlayerInfo playerInfo, CallbackInfo ci) {
         Session session = Session.getInstance();
-        if (!session.isPlayerOnEarthMC() || !session.isPlayerAuthenticated()) return;
+        if (!session.isPlayerOnEarthMC()) return;
 
         if (action != ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER) return;
 

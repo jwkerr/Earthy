@@ -102,9 +102,6 @@ public final class Inspector extends Module {
     }
 
     private void inspect() {
-        Session session = Session.getInstance();
-        if (!session.isPlayerAuthenticated()) return;
-
         Minecraft client = Minecraft.getInstance();
 
         LocalPlayer player = client.player;
@@ -119,6 +116,7 @@ public final class Inspector extends Module {
 
                 EntityDataAccessor accessor = new EntityDataAccessor(entity);
 
+                Session session = Session.getInstance();
                 boolean isPlayerOnEarthMC = session.isPlayerOnEarthMC();
 
                 if (entity instanceof Player && isPlayerOnEarthMC && player.isCrouching()) {

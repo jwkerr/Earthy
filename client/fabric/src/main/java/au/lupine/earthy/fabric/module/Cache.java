@@ -37,7 +37,7 @@ public final class Cache extends Module {
             ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
             scheduler.schedule(() -> {
-                if (!session.isPlayerOnEarthMC() || !session.isPlayerAuthenticated()) return;
+                if (!session.isPlayerOnEarthMC()) return;
                 updateCachedPlayers();
             }, 6L, TimeUnit.SECONDS);
         });
@@ -48,7 +48,7 @@ public final class Cache extends Module {
         });
 
         Tickable.register(() -> {
-            if (!session.isPlayerOnEarthMC() || !session.isPlayerAuthenticated()) return;
+            if (!session.isPlayerOnEarthMC()) return;
 
             updateCachedPlayers();
         }, 3L, TimeUnit.MINUTES);

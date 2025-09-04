@@ -27,7 +27,7 @@ public final class OverfishingWarning extends Module {
 
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
             Session session = Session.getInstance();
-            if (!session.isPlayerOnEarthMC() || !session.isPlayerAuthenticated()) return;
+            if (!session.isPlayerOnEarthMC()) return;
 
             if (!Config.warnWhenOverfishing) return;
 

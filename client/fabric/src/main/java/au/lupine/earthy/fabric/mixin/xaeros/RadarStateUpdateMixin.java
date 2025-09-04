@@ -30,7 +30,7 @@ public abstract class RadarStateUpdateMixin {
     )
     private boolean redirect(RadarList instance, Entity entity) {
         Session session = Session.getInstance();
-        if (!session.isPlayerOnEarthMC() || !session.isPlayerAuthenticated()) return instance.add(entity);
+        if (!session.isPlayerOnEarthMC()) return instance.add(entity);
 
         if (!Config.showUnobscuredPlayersOnMap) return false;
 

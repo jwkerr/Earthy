@@ -28,7 +28,7 @@ public final class AutoHUD extends Module {
             ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
             scheduler.schedule(() -> {
-                if (!session.isPlayerOnEarthMC() || !session.isPlayerAuthenticated()) return;
+                if (!session.isPlayerOnEarthMC()) return;
 
                 HUDType hud = Config.autoHUD;
                 if (!hud.equals(HUDType.NONE)) handler.sendCommand(hud.getCommand());

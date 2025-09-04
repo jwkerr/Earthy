@@ -1,13 +1,12 @@
 pluginManagement {
     repositories {
-        maven {
+        maven("https://maven.fabricmc.net/") {
             name = "Fabric"
-            url = "https://maven.fabricmc.net/"
         }
         gradlePluginPortal()
     }
 }
 
-rootProject.name = "Earthy"
+rootProject.name = "earthy"
 
-include("fabric")
+include(":client:fabric")
